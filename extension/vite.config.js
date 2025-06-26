@@ -17,8 +17,8 @@ export default defineConfig({
           dest: '.'
         },
         {
-          src: 'src/content.js', // ✅ add this to copy content.js
-          dest: '.'              // will be available at dist/content.js
+          src: 'src/content.js',
+          dest: '.' 
         }
       ]
     })
