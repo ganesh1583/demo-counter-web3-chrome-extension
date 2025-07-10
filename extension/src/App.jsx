@@ -1,27 +1,39 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { connectContract, getCurrentCount, incrementCounter2 } from './blockchain';
+import { connectContract, incrementCounter2 } from './blockchain';
 
 function App() {
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [contract, setContract] = useState(null);
+  const [contractWithSign, setContractWithSign] = useState(null);
 
   useEffect(() => {
     async function loadCount() {
-      await connectContract();
-      const current = await getCurrentCount();
-      setCount(Number(current));
+      const getData = await connectContract();
+      setContract(getData.contract);
+      setContractWithSign(getData.contractWithSign);
+      // const current = await getCurrentCount();
+      setCount(getData.count);
     }
 
     loadCount();
   }, []);
 
+  async function getCurrentCount() {
+    if (!contract) await connectContract();
+    const count = await contract.getCount();
+    return count;
+  }
+  
   const handleIncrement = async () => {
     setLoading(true);
     try {
-      await incrementCounter2();
-      const updated = await getCurrentCount();
-      setCount(Number(updated));
+      // await incrementCounter2();
+      // const updated = await getCurrentCount();
+        const tx = await contractWithSign.incrementCounter();
+        await tx.wait();
+      setCount(getCurrentCount);
     } catch (err) {
       console.error("Transaction failed:", err);
     }
