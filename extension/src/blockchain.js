@@ -30,6 +30,7 @@ const CONTRACT_ABI = [
 let contract;
 
 export async function connectContract() {
+<<<<<<< HEAD
   // if (!window.ethereum) {
   //   alert("MetaMask not found");
   //   return;
@@ -47,6 +48,17 @@ export async function connectContract() {
   const contractWithSign = contract.connect(wallet);
   // getCurrentCount();
   return {count, contract, contractWithSign};
+=======
+  if (!window.ethereum) {
+    alert("MetaMask not found, and u are here");
+    return;
+  }
+  console.log("This is it : ",window.ethereum);
+  const provider = new ethers.BrowserProvider(window.ethereum);
+  const signer = await provider.getSigner();
+  contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+  return contract;
+>>>>>>> 1d5401a (.)
 }
 
 export async function getCurrentCount() {
